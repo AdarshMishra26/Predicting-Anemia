@@ -52,7 +52,7 @@ function App() {
       {loading && (
         <div>
           <h2>Loading...</h2>
-          <Loader type="Puff" color="#00BFFF" height={100} width={100} />
+          {/* <Loader type="Puff" color="#00BFFF" height={100} width={100} /> */}
         </div>
       )}
 
