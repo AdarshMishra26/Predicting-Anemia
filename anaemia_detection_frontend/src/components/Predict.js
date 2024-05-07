@@ -6,10 +6,13 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { AppBar, Toolbar } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 
 function Predict() {
+  const navigate = useNavigate();
   const [image, setImage] = useState(null);
   const [prediction, setPrediction] = useState(null);
   const [error, setError] = useState(null);
@@ -39,50 +42,67 @@ function Predict() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container maxWidth="sm">
-        <Box sx={{ marginTop: 8, textAlign: 'center' }}>
-          <Typography variant="h4" gutterBottom>
-            Anaemia Detection
-          </Typography>
+    <>
+      <AppBar position="static">
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          <h1>Hello,User</h1>
+          <Button
+               onClick={() => navigate("/signin")}
+            style={{
+              backgroundColor: "white",
+            }}
+          >Logout</Button>
+        </Toolbar>
 
-          <form onSubmit={handleFormSubmit}>
-            <input type="file" onChange={handleImageChange} />
-            <Button type="submit" variant="contained" disabled={loading} sx={{ mt: 2 }}>
-              {loading ? 'Uploading...' : 'Upload Image'}
-            </Button>
-          </form>
+      </AppBar>
+      <ThemeProvider theme={theme}>
+        <Container maxWidth="sm">
+          <Box sx={{ marginTop: 8, textAlign: 'center',
 
-          {image && (
-            <div>
-              <Typography variant="h5" sx={{ mt: 4 }}>Image Preview</Typography>
-              <img src={URL.createObjectURL(image)} alt="Preview" style={{ maxWidth: '100%' }} />
-            </div>
-          )}
+            backgroundColor:"#ececec"
+           }}>
+            <Typography variant="h4" gutterBottom>
+              Anaemia Detection
+            </Typography>
 
-          {loading && (
-            <div>
-              <Typography variant="h5" sx={{ mt: 4 }}>Loading...</Typography>
-              {/* <Loader type="Puff" color="#00BFFF" height={100} width={100} /> */}
-            </div>
-          )}
+            <form onSubmit={handleFormSubmit}>
+              <input type="file" onChange={handleImageChange} />
+              <Button type="submit" variant="contained" disabled={loading} sx={{ mt: 2 }}>
+                {loading ? 'Uploading...' : 'Upload Image'}
+              </Button>
+            </form>
 
-          {prediction !== null && !loading && (
-            <div>
-              <Typography variant="h5" sx={{ mt: 4 }}>Prediction</Typography>
-              <Typography variant="body1">{prediction === 0 ? 'Normal' : 'Anaemia'}</Typography>
-            </div>
-          )}
+            {image && (
+              <div>
+                <Typography variant="h5" sx={{ mt: 4 }}>Image Preview</Typography>
+                <img src={URL.createObjectURL(image)} alt="Preview" style={{ maxWidth: '100%' }} />
+              </div>
+            )}
 
-          {error && !loading && (
-            <div>
-              <Typography variant="h5" sx={{ mt: 4 }}>Error</Typography>
-              <Typography variant="body1">{error}</Typography>
-            </div>
-          )}
-        </Box>
-      </Container>
-    </ThemeProvider>
+            {loading && (
+              <div>
+                <Typography variant="h5" sx={{ mt: 4 }}>Loading...</Typography>
+                {/* <Loader type="Puff" color="#00BFFF" height={100} width={100} /> */}
+              </div>
+            )}
+
+            {prediction !== null && !loading && (
+              <div>
+                <Typography variant="h5" sx={{ mt: 4 }}>Prediction</Typography>
+                <Typography variant="body1">{prediction === 0 ? 'Normal' : 'Anaemia'}</Typography>
+              </div>
+            )}
+
+            {error && !loading && (
+              <div>
+                <Typography variant="h5" sx={{ mt: 4 }}>Error</Typography>
+                <Typography variant="body1">{error}</Typography>
+              </div>
+            )}
+          </Box>
+        </Container>
+      </ThemeProvider>
+    </>
   );
 }
 
