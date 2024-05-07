@@ -3,12 +3,57 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import * as Sentry from "@sentry/react";
+import SignUp from './components/SignUp';
+import SignIn from './components/SignIn';
+import Predict from './components/Predict';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element:
+      <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
+        <App/>
+      </Sentry.ErrorBoundary>,
+  },
+  {
+    path: "/signup",
+    element:
+      <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
+        <SignUp/>
+      </Sentry.ErrorBoundary>,
+  },
+  {
+    path: "/signin",
+    element:
+      <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
+        <SignIn/>
+      </Sentry.ErrorBoundary>,
+  },
+  {
+    path: "/predict",
+    element:
+      <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
+        <Predict/>
+      </Sentry.ErrorBoundary>,
+  },
+]);
+
+
 root.render(
-  <React.StrictMode>
+
+  <RouterProvider router={router} >
     <App />
-  </React.StrictMode>
+  </RouterProvider>
+
+
 );
 
 // If you want to start measuring performance in your app, pass a function
