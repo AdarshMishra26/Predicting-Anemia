@@ -1,4 +1,3 @@
-// SignIn.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import Button from '@mui/material/Button';
@@ -7,6 +6,10 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 
 function SignIn({ setLoggedIn }) {
   const navigate = useNavigate();
@@ -30,61 +33,104 @@ function SignIn({ setLoggedIn }) {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Box sx={{ marginTop: 8, textAlign: 'center' }}>
-        <Typography variant="h4" gutterBottom>
-          Sign In
-        </Typography>
-
-        <form onSubmit={handleFormSubmit}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          {error && <p>{error}</p>}
+    <>
+      <AppBar position="static" sx={{ backgroundColor: "#333333" }}>
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Anaemia Predictor
+          </Typography>
           <Button
-            type="submit"
-            fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            color="secondary"
+            onClick={() => navigate("/")}
+            sx={{
+              background: "linear-gradient(45deg, #3F51B5 30%, #2196F3 90%)",
+              boxShadow: "0px 3px 5px 2px rgba(63, 81, 181, .3)",
+              color: "white",
+              "&:hover": {
+                background: "linear-gradient(45deg, #2196F3 30%, #3F51B5 90%)",
+                boxShadow: "0px 5px 10px 2px rgba(63, 81, 181, .3)",
+              },
+            }}
           >
-            Sign In
+            Home
           </Button>
-        </form>
-        <Button
-          type="submit"
-          fullWidth
-          style={{
-            backgroundColor: "red",
-        }}
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-          onClick={() => navigate("/signup")}
-        >
-          Sign Up
-        </Button>
+        </Toolbar>
+      </AppBar>
+
+      <Box sx={{ minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#0F1214', backgroundImage: "linear-gradient(to right, #0F1214, #121212)" }}>
+        <Container maxWidth="sm">
+          <Card sx={{ width: '100%', maxWidth: 500, backgroundColor: 'white' }}>
+            <CardContent>
+              <Typography variant="h4" gutterBottom style={{ textAlign: 'center' }}>
+                Sign In
+              </Typography>
+
+              <form onSubmit={handleFormSubmit}>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                {error && <Typography variant="body1" sx={{ color: 'red', textAlign: 'center', mt: 1, mb: 1 }}>{error}</Typography>}
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2,
+                    background: "linear-gradient(45deg, #3F51B5 30%, #2196F3 90%)",
+                    boxShadow: "0px 3px 5px 2px rgba(63, 81, 181, .3)",
+                    color: "white",
+                    "&:hover": {
+                      background: "linear-gradient(45deg, #2196F3 30%, #3F51B5 90%)",
+                      boxShadow: "0px 5px 10px 2px rgba(63, 81, 181, .3)",
+                    },
+                  }}
+                >
+                  Sign In
+                </Button>
+              </form>
+
+              <Button
+                fullWidth
+                variant="contained"
+                sx={{
+                  mt: 2,
+                  mb: 2,
+                  background: "red",
+                  color: "white",
+                  "&:hover": {
+                    backgroundColor: "darkred",
+                  },
+                }}
+                onClick={() => navigate("/signup")}
+              >
+                Sign Up
+              </Button>
+            </CardContent>
+          </Card>
+        </Container>
       </Box>
-    </Container>
+    </>
   );
 }
 

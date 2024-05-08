@@ -11,6 +11,8 @@ import * as Sentry from "@sentry/react";
 import SignUp from './components/SignUp';
 import SignIn from './components/SignIn';
 import Predict from './components/Predict';
+import About from './components/About';
+import ContactUs from './components/ContactUs';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -42,6 +44,20 @@ const router = createBrowserRouter([
     element:
       <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
         <Predict/>
+      </Sentry.ErrorBoundary>,
+  },
+  {
+    path: "/about",
+    element:
+      <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
+        <About/>
+      </Sentry.ErrorBoundary>,
+  },
+  {
+    path: "/contact",
+    element:
+      <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
+        <ContactUs/>
       </Sentry.ErrorBoundary>,
   },
 ]);

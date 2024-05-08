@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import Predict from './components/Predict';
+import LandingPage from './components/LandingPage';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -14,7 +15,7 @@ function App() {
   return (
     <div className="App">
       {!signedUp ? (
-        <SignUp setSignedUp={setSignedUp} setLoggedIn={setLogged} />
+        <LandingPage />
       ) : <h1>LogIn</h1>}
       {/* {
         loggedIn ? (
