@@ -13,7 +13,7 @@ import SignIn from './components/SignIn';
 import Predict from './components/Predict';
 import About from './components/About';
 import ContactUs from './components/ContactUs';
-
+import Profile from './components/Profile';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -58,6 +58,13 @@ const router = createBrowserRouter([
     element:
       <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
         <ContactUs/>
+      </Sentry.ErrorBoundary>,
+  },
+  {
+    path: "/profile",
+    element:
+      <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
+        <Profile/>
       </Sentry.ErrorBoundary>,
   },
 ]);

@@ -11,7 +11,6 @@ import Toolbar from '@mui/material/Toolbar';
 import Link from '@mui/material/Link';
 import logo from '../assets/logo-modified.png';
 
-
 function SignIn({ setLoggedIn }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -23,7 +22,10 @@ function SignIn({ setLoggedIn }) {
     try {
       const response = await axios.post('http://localhost:8000/api/signin/', { email, password });
       console.log(response.data.message);
-      // setLoggedIn(true);
+
+      // Store the token in local storage
+      localStorage.setItem('token', response.data.token);
+
       navigate("/predict");
     } catch (error) {
       console.error('Error signing in:', error);
@@ -129,7 +131,6 @@ function SignIn({ setLoggedIn }) {
           />
         </Box>
       </Box>
-      
     </>
   );
 }

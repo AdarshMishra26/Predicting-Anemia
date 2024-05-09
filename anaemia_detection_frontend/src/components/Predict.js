@@ -114,6 +114,23 @@ function Predict() {
           >
             Contact Us
           </Button>
+
+          <Button
+            onClick={() => navigate("/profile")}
+            variant="contained"
+            
+            sx={{
+              background: "linear-gradient(45deg, #102C57 30%, #2196F3 90%)",
+              boxShadow: "0px 3px 5px 2px rgba(63, 81, 181, .3)",
+              color: "white",
+              "&:hover": {
+                background: "linear-gradient(45deg, #2196F3 30%, #3F51B5 90%)",
+                boxShadow: "0px 5px 10px 2px rgba(63, 81, 181, .3)",
+              },
+            }}
+          >
+            Profile
+          </Button>
         </Toolbar>
       </AppBar>
 
