@@ -9,6 +9,7 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import logo from '../assets/logo-modified.png';
 
 function ContactUs() {
   const navigate = useNavigate();
@@ -19,11 +20,12 @@ function ContactUs() {
   };
 
   return (
-    <div style={{ backgroundColor: '#0F1214', backgroundImage: "linear-gradient(to right, #0F1214, #121212)", minHeight: '100vh' }}>
-      <AppBar position="static" sx={{ backgroundColor: "#333333" }}>
-        <Toolbar sx={{ justifyContent: "space-between" }}>
-          <Typography variant="h6" component="div">
-            Hello, User
+    <div style={{ backgroundColor: 'white',  minHeight: '100vh' }}>
+      <AppBar position="sticky" sx={{ backgroundColor: "#4D869C", zIndex: 1000 }}>
+        <Toolbar>
+          <img src={logo} alt="logo" style={{ marginRight: '10px', height: '40px' }} />
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Anaemia Predictor
           </Typography>
           <Box display="flex" alignItems="center">
             <Button
@@ -60,7 +62,7 @@ function ContactUs() {
       </AppBar>
 
       <Container maxWidth="md" sx={{ minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <Box sx={{ textAlign: 'center', color: 'white' }}>
+        <Box sx={{ textAlign: 'center', color: 'black' }}>
           <Typography variant="h4" gutterBottom>
             Contact Us
           </Typography>
@@ -122,6 +124,10 @@ function ContactUs() {
           </Card>
         </Box>
       </Container>
+
+      <footer style={{ backgroundColor: '#4D869C', color: 'white', textAlign: 'center', padding: '10px', position: 'fixed', bottom: '0', width: '100%', left:'0' }}>
+        &copy; {new Date().getFullYear()} | NanoBiosLab
+      </footer>
     </div>
   );
 }

@@ -7,6 +7,8 @@ import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { AppBar, Toolbar, Card, CardContent } from '@mui/material';
+import logo from '../assets/logo-modified.png';
+import img1 from '../assets/img_1_1.jpg';
 
 const theme = createTheme({
   palette: {
@@ -75,88 +77,87 @@ function Predict() {
   
   return (
     <>
-      <AppBar position="static" sx={{ backgroundColor: "#333333" }}>
-        <Toolbar sx={{ justifyContent: "space-between" }}>
+      <AppBar position="sticky" sx={{ backgroundColor: "#4D869C", zIndex: 1000 }}>
+        <Toolbar>
+          <img src={logo} alt="logo" style={{ marginRight: '10px', height: '40px' }} />
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Anaemia-Predictor
+            Anaemia Predictor
           </Typography>
-          <Box display="flex" justifyContent="space-between">
-            <Button
-              onClick={() => navigate("/signin")}
-              variant="contained"
-              sx={{
-                background: "linear-gradient(45deg, #3F51B5 30%, #2196F3 90%)",
-                boxShadow: "0px 3px 5px 2px rgba(63, 81, 181, .3)",
-                color: "white",
-                "&:hover": {
-                  background: "linear-gradient(45deg, #2196F3 30%, #3F51B5 90%)",
-                  boxShadow: "0px 5px 10px 2px rgba(63, 81, 181, .3)",
-                },
-                marginRight: "1rem"
-              }}
-            >
-              Logout
-            </Button>
-            <Button
-              onClick={() => navigate("/contact")}
-              variant="contained"
-              sx={{
-                background: "linear-gradient(45deg, #3F51B5 30%, #2196F3 90%)",
-                boxShadow: "0px 3px 5px 2px rgba(63, 81, 181, .3)",
-                color: "white",
-                "&:hover": {
-                  background: "linear-gradient(45deg, #2196F3 30%, #3F51B5 90%)",
-                  boxShadow: "0px 5px 10px 2px rgba(63, 81, 181, .3)",
-                },
-              }}
-            >
-              Contact Us
-            </Button>
-          </Box>
+          <Button
+            onClick={() => navigate("/signin")}
+            variant="contained"
+            sx={{
+              background: "linear-gradient(45deg, #102C57 30%, #2196F3 90%)",
+              boxShadow: "0px 3px 5px 2px rgba(63, 81, 181, .3)",
+              color: "white",
+              "&:hover": {
+                background: "linear-gradient(45deg, #2196F3 30%, #3F51B5 90%)",
+                boxShadow: "0px 5px 10px 2px rgba(63, 81, 181, .3)",
+              },
+              marginRight: "1rem"
+            }}
+          >
+            Logout
+          </Button>
+          <Button
+            onClick={() => navigate("/contact")}
+            variant="contained"
+            sx={{
+              background: "linear-gradient(45deg, #102C57 30%, #2196F3 90%)",
+              boxShadow: "0px 3px 5px 2px rgba(63, 81, 181, .3)",
+              color: "white",
+              "&:hover": {
+                background: "linear-gradient(45deg, #2196F3 30%, #3F51B5 90%)",
+                boxShadow: "0px 5px 10px 2px rgba(63, 81, 181, .3)",
+              },
+            }}
+          >
+            Contact Us
+          </Button>
         </Toolbar>
       </AppBar>
 
       <ThemeProvider theme={theme}>
-        <Box sx={{ backgroundColor: "#0F1214", minHeight: "100vh", py: 8 }}>
+        <Box sx={{ backgroundColor: "#FFFFFF", minHeight: "100vh", py: 8 }}>
           <Container maxWidth="lg">
             <Box display="flex" justifyContent="space-between" sx={{ gap: '2rem' }}>
               {/* Sample Image Card */}
-              <Card sx={{ flex: '1', borderRadius: "10px", boxShadow: "0 4px 8px rgba(0,0,0,0.1)",}}>
+              <Card sx={{ flex: '1', borderRadius: "10px", boxShadow: "0 4px 8px rgba(0,0,0,0.1)", backgroundColor: "#FFFFFF" }}>
                 <CardContent>
-                  <Typography variant="h6" gutterBottom>
+                  <Typography variant="h6" gutterBottom style={{ color: '#102C57' }}>
                     Sample Image to be Uploaded
                   </Typography>
-                  <img src="https://miro.medium.com/v2/resize:fit:1400/1*Z-Aqguy-l1cve-gDupTG7A.jpeg" alt="Sample" style={{ width: '100%', height: '300px', objectFit: 'cover', borderRadius: "10px" }} />
+                  <img src={img1} alt="Sample" style={{ width: '100%', height: '300px', objectFit: 'cover', borderRadius: "10px" }} />
                 </CardContent>
               </Card>
 
               {/* Anaemia Detection Section */}
               <Box sx={{
                 flex: '1', textAlign: 'center',
-                backgroundColor: "white", padding: "2rem", borderRadius: "10px", boxShadow: "0 4px 8px rgba(0,0,0,0.1)"
+                backgroundColor: "#FFFFFF", padding: "2rem", borderRadius: "10px", boxShadow: "0 4px 8px rgba(0,0,0,0.1)"
               }}>
-                <Typography variant="h4" gutterBottom>
+                <Typography variant="h4" gutterBottom style={{ color: '#102C57' }}>
                   Anaemia Detection
                 </Typography>
 
                 <form onSubmit={handleFormSubmit} style={{ marginBottom: "1rem" }}>
                   <input type="file" onChange={handleImageChange} style={{ display: 'none' }} id="image-upload" />
                   <label htmlFor="image-upload">
-                    <Button variant="contained" component="span" sx={{ marginBottom: "1rem" }}>
+                    <Button variant="contained" component="span" sx={{ marginBottom: "1rem", color: '#FFFFFF', backgroundColor: '#102C57' }}>
                       Upload Image
                     </Button>
                   </label><br />
-                  <Button onClick={captureImage} variant="contained" sx={{ marginRight: "1rem" }}>
+                  <Button onClick={captureImage} variant="contained" sx={{ marginRight: "1rem", color: '#FFFFFF', backgroundColor: '#102C57' }}>
                     Capture Image
                   </Button>
-                  <Button type="submit" variant="contained" disabled={loading} sx={{ marginLeft: "1rem" }}>
+                  <Button type="submit" variant="contained" disabled={loading} sx={{ marginLeft: "1rem", color: '#FFFFFF', backgroundColor: '#102C57' }}>
                     {loading ? 'Uploading...' : 'Predict'}
                   </Button>
                 </form>
 
                 {image && (
                   <div>
-                    <Typography variant="h5" sx={{ mt: 4 }}>Image Preview</Typography>
+                    <Typography variant="h5" sx={{ mt: 4, color: '#102C57' }}>Image Preview</Typography>
                     {typeof image === 'string' ? (
                       <img src={image} alt="Preview" style={{ width: '100%', height: '300px', objectFit: 'cover', marginTop: "1rem", borderRadius: "10px" }} />
                     ) : (
@@ -167,27 +168,30 @@ function Predict() {
 
                 {loading && (
                   <div>
-                    <Typography variant="h5" sx={{ mt: 4 }}>Loading...</Typography>
+                    <Typography variant="h5" sx={{ mt: 4, color: '#102C57' }}>Loading...</Typography>
                   </div>
                 )}
 
                 {prediction !== null && !loading && (
                   <div>
-                    <Typography variant="h5" sx={{ mt: 4 }}>Prediction</Typography>
-                    <Typography variant="body1">{prediction === 0 ? 'Normal' : 'Anaemia'}</Typography>
+                    <Typography variant="h5" sx={{ mt: 4, color: '#102C57' }}>Prediction</Typography>
+                    <Typography variant="body1" style={{ color: '#102C57' }}>{prediction === 0 ? 'Normal' : 'Anaemia'}</Typography>
                   </div>
                 )}
 
                 {error && !loading && (
                   <div>
-                    <Typography variant="h5" sx={{ mt: 4 }}>Error</Typography>
-                    <Typography variant="body1">{error}</Typography>
+                    <Typography variant="h5" sx={{ mt: 4, color: '#102C57' }}>Error</Typography>
+                    <Typography variant="body1" style={{ color: '#102C57' }}>{error}</Typography>
                   </div>
                 )}
               </Box>
             </Box>
           </Container>
         </Box>
+        <footer style={{ backgroundColor: '#4D869C', color: 'white', textAlign: 'center', padding: '10px', position: 'fixed', bottom: '0', width: '100%', left:'0' }}>
+          &copy; {new Date().getFullYear()} | NanoBiosLab
+        </footer>
       </ThemeProvider>
     </>
   );
