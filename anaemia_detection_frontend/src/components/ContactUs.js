@@ -20,12 +20,12 @@ function ContactUs() {
   };
 
   return (
-    <div style={{ backgroundColor: 'white',  minHeight: '100vh' }}>
-      <AppBar position="sticky" sx={{ backgroundColor: "#4D869C", zIndex: 1000 }}>
+    <div style={{ backgroundColor: 'white', minHeight: '100vh' }}>
+      <AppBar position="sticky" sx={{ top: 0, backgroundColor: "#eebcbc", padding: '5px', zIndex: 1000 }}>
         <Toolbar>
-          <img src={logo} alt="logo" style={{ marginRight: '10px', height: '40px' }} />
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Anaemia Predictor
+          <img src={logo} alt="logo" style={{ marginRight: '8px', height: '50px' }} />
+          <Typography variant="h6" component="div" sx={{ color: "#231651", fontWeight: "800", lineHeight: "20px", flexGrow: 1 }}>
+            Anaemia <br /> Predictor
           </Typography>
           <Box display="flex" alignItems="center">
             <Button
@@ -33,14 +33,10 @@ function ContactUs() {
               color="secondary"
               onClick={() => navigate("/predict")}
               sx={{
-                background: "linear-gradient(45deg, #3F51B5 30%, #2196F3 90%)",
-                boxShadow: "0px 3px 5px 2px rgba(63, 81, 181, .3)",
+                background: "#231651",
                 color: "white",
-                "&:hover": {
-                  background: "linear-gradient(45deg, #2196F3 30%, #3F51B5 90%)",
-                  boxShadow: "0px 5px 10px 2px rgba(63, 81, 181, .3)",
-                },
-                mr: 2,
+                borderRadius: "1em",
+                marginRight: '1em' // Add this line
               }}
             >
               Dashboard
@@ -48,11 +44,9 @@ function ContactUs() {
             <Button
               onClick={() => navigate("/signin")}
               sx={{
-                backgroundColor: "white",
-                color: "black",
-                "&:hover": {
-                  backgroundColor: "grey",
-                },
+                background: "#231651",
+                color: "white",
+                borderRadius: "1em"
               }}
             >
               Logout
@@ -107,14 +101,10 @@ function ContactUs() {
                   fullWidth
                   variant="contained"
                   color="secondary"
-                  sx={{ mt: 3,
-                    background: "linear-gradient(45deg, #3F51B5 30%, #2196F3 90%)",
-                    boxShadow: "0px 3px 5px 2px rgba(63, 81, 181, .3)",
+                  sx={{
+                    background: "#231651",
                     color: "white",
-                    "&:hover": {
-                      background: "linear-gradient(45deg, #2196F3 30%, #3F51B5 90%)",
-                      boxShadow: "0px 5px 10px 2px rgba(63, 81, 181, .3)",
-                    },
+                    borderRadius: "1em"
                   }}
                 >
                   Submit
@@ -125,7 +115,7 @@ function ContactUs() {
         </Box>
       </Container>
 
-      <footer style={{ backgroundColor: '#4D869C', color: 'white', textAlign: 'center', padding: '10px', position: 'fixed', bottom: '0', width: '100%', left:'0' }}>
+      <footer style={{ backgroundColor: '#eebcbc', color: '#231651', textAlign: 'center', padding: '10px', position: 'fixed', bottom: '0', width: '100%', fontWeight: '400', }}>
         &copy; {new Date().getFullYear()} | NanoBiosLab
       </footer>
     </div>

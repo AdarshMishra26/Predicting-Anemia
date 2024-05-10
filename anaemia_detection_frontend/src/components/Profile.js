@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { useNavigate } from 'react-router-dom';
+import logo from '../assets/logo-modified.png';
 
 const Profile = () => {
   const [userData, setUserData] = useState({
@@ -21,13 +22,22 @@ const Profile = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios('http://localhost:8000/api/user/profile/');
-      setUserData({
-        id: result.data.id,
-        firstName: result.data.first_name,
-        lastName: result.data.last_name,
-        email: result.data.email,
-      });
+      try {
+        const token = localStorage.getItem('token');
+        const result = await axios.get('http://localhost:8000/api/user/profile/', {
+          headers: {
+            Authorization: `Token ${token}`
+          }
+        });
+        setUserData({
+          id: result.data.id,
+          firstName: result.data.first_name,
+          lastName: result.data.last_name,
+          email: result.data.email,
+        });
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
     };
     fetchData();
   }, []);
@@ -38,51 +48,57 @@ const Profile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.put('http://localhost:8000/api/user/profile/', userData);
-    alert('User profile updated successfully');
+    try {
+      const token = localStorage.getItem('token');
+      await axios.put('http://localhost:8000/api/user/profile/', userData, {
+        headers: {
+          Authorization: `Token ${token}`
+        }
+      });
+      alert('User profile updated successfully');
+    } catch (error) {
+      console.error('Error updating user profile:', error);
+    }
   };
-
+  const logout = () => {
+    localStorage.removeItem("IS_LOGED");
+    navigate("/");
+  }
   return (
     <>
-      <AppBar position="sticky" sx={{ backgroundColor: "#4D869C", zIndex: 1000 }}>
+      <AppBar position="sticky" sx={{ top: 0, backgroundColor: "#eebcbc", padding: '5px', zIndex: 1000 }}>
         <Toolbar>
-          {/* Add your logo here */}
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Anaemia Predictor
+          <img src={logo} alt="logo" style={{ marginRight: '8px', height: '50px' }} />
+          <Typography variant="h6" component="div" sx={{ color: "#231651", fontWeight: "800", lineHeight: "20px", flexGrow: 1 }}>
+            Anaemia <br />Predictor
           </Typography>
-          <Button
-            onClick={() => navigate("/signin")}
-            variant="contained"
-            sx={{
-              background: "linear-gradient(45deg, #102C57 30%, #2196F3 90%)",
-              boxShadow: "0px 3px 5px 2px rgba(63, 81, 181, .3)",
-              color: "white",
-              "&:hover": {
-                background: "linear-gradient(45deg, #2196F3 30%, #3F51B5 90%)",
-                boxShadow: "0px 5px 10px 2px rgba(63, 81, 181, .3)",
-              },
-              marginRight: "1rem"
-            }}
-          >
-            Logout
-          </Button>
-          <Button
-            onClick={() => navigate("/contact")}
-            variant="contained"
-            sx={{
-              background: "linear-gradient(45deg, #102C57 30%, #2196F3 90%)",
-              boxShadow: "0px 3px 5px 2px rgba(63, 81, 181, .3)",
-              color: "white",
-              "&:hover": {
-                background: "linear-gradient(45deg, #2196F3 30%, #3F51B5 90%)",
-                boxShadow: "0px 5px 10px 2px rgba(63, 81, 181, .3)",
-              },
-            }}
-          >
-            Contact Us
-          </Button>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', flexGrow: 1, gap: '16px' }}>
+            <Button
+              onClick={logout}
+              variant="contained"
+              sx={{
+                background: "#231651",
+                color: "white",
+                borderRadius: "1em"
+              }}
+            >
+              Logout
+            </Button>
+            <Button
+              onClick={() => navigate("/contact")}
+              variant="contained"
+              sx={{
+                background: "#231651",
+                color: "white",
+                borderRadius: "1em"
+              }}
+            >
+              Contact Us
+            </Button>
+          </Box>
         </Toolbar>
       </AppBar>
+
       <Container maxWidth="sm" sx={{ p: 4, mt: 16 }}>
         <Typography variant="h4" gutterBottom style={{ textAlign: 'center', mt: 4, mb: 4 }}>
           User Profile
@@ -128,15 +144,9 @@ const Profile = () => {
               fullWidth
               variant="contained"
               sx={{
-                background: "linear-gradient(45deg, #3F51B5 30%, #2196F3 90%)",
-                boxShadow: "0px 3px 5px 2px rgba(63, 81, 181, .3)",
+                background: "#231651",
                 color: "white",
-                "&:hover": {
-                  background: "linear-gradient(45deg, #2196F3 30%, #3F51B5 90%)",
-                  boxShadow: "0px 5px 10px 2px rgba(63, 81, 181, .3)",
-                },
-                width: '50%', // Adjust button width here
-                mt: 2, // Adjust margin top here
+                borderRadius: "1em"
               }}
             >
               Update
@@ -144,7 +154,7 @@ const Profile = () => {
           </Box>
         </form>
       </Container>
-      <footer style={{ backgroundColor: '#4D869C', color: 'white', textAlign: 'center', padding: '10px', position: 'fixed', bottom: '0', width: '100%', left:'0' }}>
+      <footer style={{ backgroundColor: '#eebcbc', color: '#231651', textAlign: 'center', padding: '10px', position: 'fixed', bottom: '0', width: '100%', left: '0' }}>
         &copy; {new Date().getFullYear()} | NanoBiosLab
       </footer>
     </>

@@ -11,7 +11,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Link from '@mui/material/Link';
 import logo from '../assets/logo-modified.png';
 
-function SignIn({ setLoggedIn }) {
+function SignIn() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,11 +20,14 @@ function SignIn({ setLoggedIn }) {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/api/signin/', { email, password });
-      console.log(response.data.message);
+      const response = await axios.post('http://localhost:8000/api/signin/', {
+        email: email.trim(),
+        password: password.trim()
+      });
 
       // Store the token in local storage
-      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('IS_LOGED', true);
+      localStorage.setItem('token', response.data?.token)
 
       navigate("/predict");
     } catch (error) {
@@ -35,24 +38,19 @@ function SignIn({ setLoggedIn }) {
 
   return (
     <>
-      <AppBar position="sticky" sx={{ top: 0, backgroundColor: "#4D869C", zIndex: 1000 }}>
+      <AppBar position="sticky" sx={{ top: 0, backgroundColor: "#eebcbc", padding: '5px', zIndex: 1000 }}>
         <Toolbar>
-          <img src={logo} alt="logo" style={{ marginRight: '10px', height: '40px' }} />
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Anaemia Predictor
+          <img src={logo} alt="logo" style={{ marginRight: '8px', height: '50px' }} />
+          <Typography variant="h6" component="div" sx={{ color: "#231651", fontWeight: "800", lineHeight: "20px", flexGrow: 1 }}>
+            Anaemia <br /> Predictor
           </Typography>
           <Button
             variant="contained"
-            color="secondary"
             onClick={() => navigate("/")}
             sx={{
-              background: "linear-gradient(45deg, #102C57 30%, #2196F3 90%)",
-              boxShadow: "0px 3px 5px 2px rgba(63, 81, 181, .3)",
+              background: "#231651",
               color: "white",
-              "&:hover": {
-                background: "linear-gradient(45deg, #2196F3 30%, #3F51B5 90%)",
-                boxShadow: "0px 5px 10px 2px rgba(63, 81, 181, .3)",
-              },
+              borderRadius: "1em"
             }}
           >
             Home
@@ -98,15 +96,9 @@ function SignIn({ setLoggedIn }) {
                   fullWidth
                   variant="contained"
                   sx={{
-                    background: "linear-gradient(45deg, #3F51B5 30%, #2196F3 90%)",
-                    boxShadow: "0px 3px 5px 2px rgba(63, 81, 181, .3)",
+                    background: "#231651",
                     color: "white",
-                    "&:hover": {
-                      background: "linear-gradient(45deg, #2196F3 30%, #3F51B5 90%)",
-                      boxShadow: "0px 5px 10px 2px rgba(63, 81, 181, .3)",
-                    },
-                    width: '50%', // Adjust button width here
-                    mt: 2, // Adjust margin top here
+                    borderRadius: "1em"
                   }}
                 >
                   Sign In
@@ -119,7 +111,7 @@ function SignIn({ setLoggedIn }) {
               </Box>
             </form>
           </Container>
-          <footer style={{ backgroundColor: '#4D869C', color: 'white', textAlign: 'center', padding: '10px', position: 'fixed', bottom: '0', width: '100%' }}>
+          <footer style={{ backgroundColor: '#eebcbc', color: '#231651', textAlign: 'center', padding: '10px', position: 'fixed', bottom: '0', width: '100%', fontWeight: '400', }}>
             &copy; {new Date().getFullYear()} | NanoBiosLab
           </footer>
         </Box>

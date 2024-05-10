@@ -26,7 +26,6 @@ function SignUp({ setLoggedIn }) {
     axios.post('http://localhost:8000/api/signup/', { firstName, lastName, email, password, repassword })
       .then(response => {
         console.log(response.data.message);
-        setLoggedIn(true);
         navigate("/signin");
       })
       .catch(error => {
@@ -37,24 +36,20 @@ function SignUp({ setLoggedIn }) {
 
   return (
     <>
-      <AppBar position="sticky" sx={{ backgroundColor: "#4D869C", zIndex: 1000 }}>
+      <AppBar position="sticky" sx={{ top: '0', backgroundColor: "#eebcbc", padding: '5px', zIndex: 1000 }}>
         <Toolbar>
-          <img src={logo} alt="logo" style={{ marginRight: '10px', height: '40px' }} />
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Anaemia Predictor
+          <img src={logo} alt="logo" style={{ marginRight: '8px', height: '50px' }} />
+          <Typography variant="h6" component="div" sx={{ color: "#231651", fontWeight: "800", lineHeight: "20px", flexGrow: 1 }}>
+            Anaemia <br /> Predictor
           </Typography>
           <Button
             variant="contained"
-            color="secondary"
+            // color="secondary"
             onClick={() => navigate("/")}
             sx={{
-              background: "linear-gradient(45deg, #102C57 30%, #2196F3 90%)",
-              boxShadow: "0px 3px 5px 2px rgba(63, 81, 181, .3)",
+              background: "#231651",
               color: "white",
-              "&:hover": {
-                background: "linear-gradient(45deg, #2196F3 30%, #3F51B5 90%)",
-                boxShadow: "0px 5px 10px 2px rgba(63, 81, 181, .3)",
-              },
+              borderRadius: "1em"
             }}
           >
             Home
@@ -64,7 +59,7 @@ function SignUp({ setLoggedIn }) {
       </AppBar>
 
       <Box sx={{ minHeight: '100vh', display: 'flex', backgroundColor: '#ffffff', borderRadius: '.5rem .5rem 0 0' }}>
-        <Box sx={{ display: 'flex', flex: '1', justifyContent: 'center', alignItems: 'center', mt:'0' }}>
+        <Box sx={{ display: 'flex', flex: '1', justifyContent: 'center', alignItems: 'center', mt: '0' }}>
           <Container maxWidth="sm">
             <form onSubmit={handleFormSubmit}>
               <Typography variant="h4" gutterBottom style={{ textAlign: 'center' }}>
@@ -134,20 +129,17 @@ function SignUp({ setLoggedIn }) {
                   variant="contained"
                   type="submit"
                   sx={{
-                    background: "linear-gradient(45deg, #3F51B5 30%, #2196F3 90%)",
-                    boxShadow: "0px 3px 5px 2px rgba(63, 81, 181, .3)",
+                    background: "#231651",
                     color: "white",
-                    "&:hover": {
-                      background: "linear-gradient(45deg, #2196F3 30%, #3F51B5 90%)",
-                      boxShadow: "0px 5px 10px 2px rgba(63, 81, 181, .3)",
-                    },
+                    borderRadius: "1em",
+                    width: '100%'
                   }}
                 >
                   Sign Up
                 </Button>
               </Box>
             </form>
-            <footer style={{ backgroundColor: '#4D869C', color: 'white', textAlign: 'center', padding: '10px', position: 'fixed', bottom: '0', width: '100%', left:'0' }}>
+            <footer style={{ backgroundColor: '#eebcbc', color: '#231651', textAlign: 'center', padding: '10px', position: 'fixed', bottom: '0', width: '100%', fontWeight: '800', left:'0' }}>
               &copy; {new Date().getFullYear()} | NanoBiosLab
             </footer>
           </Container>

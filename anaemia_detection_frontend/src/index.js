@@ -14,6 +14,8 @@ import Predict from './components/Predict';
 import About from './components/About';
 import ContactUs from './components/ContactUs';
 import Profile from './components/Profile';
+import History from './components/History';
+import { PrivateRoute } from './utils/PrivateRoute';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -22,49 +24,65 @@ const router = createBrowserRouter([
     path: "/",
     element:
       <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
-        <App/>
+        <App />
       </Sentry.ErrorBoundary>,
   },
   {
     path: "/signup",
     element:
       <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
-        <SignUp/>
+        <SignUp />
       </Sentry.ErrorBoundary>,
   },
   {
     path: "/signin",
     element:
       <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
-        <SignIn/>
+        <SignIn />
       </Sentry.ErrorBoundary>,
   },
   {
     path: "/predict",
     element:
       <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
-        <Predict/>
+        <PrivateRoute>
+          <Predict />
+        </PrivateRoute>
       </Sentry.ErrorBoundary>,
   },
   {
     path: "/about",
     element:
       <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
-        <About/>
+        <About />
       </Sentry.ErrorBoundary>,
   },
   {
     path: "/contact",
     element:
       <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
-        <ContactUs/>
+        <PrivateRoute>
+          <ContactUs />
+        </PrivateRoute>
       </Sentry.ErrorBoundary>,
   },
   {
     path: "/profile",
     element:
       <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
-        <Profile/>
+        <PrivateRoute>
+          <Profile />
+        </PrivateRoute>
+      </Sentry.ErrorBoundary>,
+  },
+
+  {
+    path: "/history",
+    element:
+      <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
+        <PrivateRoute>
+          <History />
+        </PrivateRoute>
       </Sentry.ErrorBoundary>,
   },
 ]);
