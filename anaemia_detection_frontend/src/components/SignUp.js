@@ -59,7 +59,7 @@ function SignUp({ setLoggedIn }) {
       </AppBar>
 
       <Box sx={{ minHeight: '100vh', display: 'flex', backgroundColor: '#ffffff', borderRadius: '.5rem .5rem 0 0' }}>
-        <Box sx={{ display: 'flex', flex: '1', justifyContent: 'center', alignItems: 'center', mt: '0' }}>
+        <Box sx={{ display: 'flex', flex: '1', justifyContent: 'center', alignItems: 'center', mt: '0',marginTop: '-100px'  }}>
           <Container maxWidth="sm">
             <form onSubmit={handleFormSubmit}>
               <Typography variant="h4" gutterBottom style={{ textAlign: 'center' }}>

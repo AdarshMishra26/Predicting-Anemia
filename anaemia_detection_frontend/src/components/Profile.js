@@ -9,6 +9,17 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo-modified.png';
+import Lottie from 'react-lottie';
+import animationData1 from '../assets/background.json';
+
+const hero1 = {
+  loop: true,
+  autoplay: true,
+  animationData: animationData1,
+  rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice'
+  }
+};
 
 const Profile = () => {
   const [userData, setUserData] = useState({
@@ -84,6 +95,14 @@ const Profile = () => {
           </Box>
         </Toolbar>
       </AppBar>
+
+      <Lottie
+                options={hero1}
+                height={"100%"}
+                width={"100%"}
+                isClickToPauseDisabled={true}
+                style={{ position: "fixed", top: 0, left: 0, zIndex: -1 }}
+            />
 
       <Container maxWidth="sm" sx={{top:0, p: 4, mt: 6 }}>
         <Typography variant="h4" gutterBottom style={{ textAlign: 'center', mt: 4, mb: 4 }}>

@@ -2,13 +2,32 @@ import React, { useEffect } from 'react';
 import { Container, Typography, Button, AppBar, Toolbar, Grid, Box, useMediaQuery, useTheme, Divider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo-modified.png';
-import anaemiaImage from '../assets/anaemia.jpg';
+import animationData from '../assets/health.json'
+import Lottie from 'react-lottie';
+import animationData1 from '../assets/health1.json'
+
+const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+        preserveAspectRatio: 'xMidYMid slice'
+    }
+};
+
+const hello = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData1,
+    rendererSettings: {
+        preserveAspectRatio: 'xMidYMid slice'
+    }
+};
 
 function LandingPage() {
     const navigate = useNavigate();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
 
     const symptoms = [
         "Fatigue or weakness",
@@ -62,7 +81,6 @@ function LandingPage() {
                         padding: ${isMobile ? '50px 0' : '100px 0'};
                         min-height: 100vh;
                         display: flex;
-                        opacity:90;
                         justify-content: center;
                         align-items: center;
                         background-color: #FAFAFA;
@@ -70,6 +88,9 @@ function LandingPage() {
                         position: relative;
                         left: 0;
                         right: 0;
+                        animation: fadeInAnimation 1s ease-in-out;
+                        animation-fill-mode: forwards;
+                        opacity: 0;
                     }
                     .about-container {
                         min-height: 100vh;
@@ -79,6 +100,9 @@ function LandingPage() {
                         margin-top: 0;
                         margin-bottom: 0;
                         padding: 50px;
+                        animation: fadeInAnimation 1s ease-in-out;
+                        animation-fill-mode: forwards;
+                        opacity: 0;
                     }
                     .footer {
                         background-color: #eebcbc;
@@ -92,6 +116,9 @@ function LandingPage() {
                     }
                     .image-container {
                         max-width: 100%;
+                        animation: fadeInAnimation 1s ease-in-out;
+                        animation-fill-mode: forwards;
+                        opacity: 0;
                     }
                     .image-container img {
                         width: 100%;
@@ -100,6 +127,9 @@ function LandingPage() {
                     }
                     .content-container {
                         text-align: center;
+                        animation: fadeInAnimation 1s ease-in-out;
+                        animation-fill-mode: forwards;
+                        opacity: 0;
                     }
                     .content-container p,.about-container p {
                         text-align: justify;
@@ -108,7 +138,29 @@ function LandingPage() {
                         display: flex;
                         gap: 10px;
                     }
-
+                    @keyframes fadeInAnimation {
+                        0% {
+                            opacity: 0;
+                        }
+                        100% {
+                            opacity: 1;
+                        }
+                    }
+                    .fade-in-left {
+                        animation: fadeInLeft 1s ease-in-out;
+                        animation-fill-mode: forwards;
+                        opacity: 0;
+                    }
+                    @keyframes fadeInLeft {
+                        0% {
+                            opacity: 0;
+                            transform: translateX(-50px);
+                        }
+                        100% {
+                            opacity: 1;
+                            transform: translateX(0);
+                        }
+                    }
                 `}
             </style>
             <AppBar position="sticky" className="sticky-app-bar" sx={{ backgroundColor: "#eebcbc", padding: "5px" }}>
@@ -155,10 +207,15 @@ function LandingPage() {
 
             <Container className="main-container">
                 <Grid container spacing={4} justifyContent="center" alignItems="center">
-                    <Grid item xs={12} md={6} className="image-container">
-                        <img src={anaemiaImage} alt="Anaemia Prediction" />
+                    <Grid item xs={12} md={6} className="image-container fade-in-left">
+
+                        {/* <img src={anaemiaImage} alt="Anaemia Prediction" /> */}
+                        <Lottie options={defaultOptions}
+                            height={400}
+                            width={400}
+                        />
                     </Grid>
-                    <Grid item xs={12} md={6} className="content-container">
+                    <Grid item xs={12} md={6} className="content-container fade-in-left">
                         <Typography variant="h2" align="center" gutterBottom>
                             Anaemia Predictor
                         </Typography>
@@ -182,7 +239,7 @@ function LandingPage() {
                                 background: "#231651",
                                 color: "white",
                                 borderRadius: "1em",
-                                width: "20%",
+                                width: "30%",
                                 marginTop: "10px"
 
                             }}
@@ -194,8 +251,6 @@ function LandingPage() {
             </Container>
 
             <Divider />
-
-
 
             <Box className="about-container">
                 <Container maxWidth="md">
@@ -213,7 +268,7 @@ function LandingPage() {
                                     <ul>
                                         {symptoms.map((symptom, index) => (
                                             <Typography key={index} variant="body1" paragraph>
-                                             <li>    {symptom}.</li>
+                                                <li>    {symptom}.</li>
                                             </Typography>
                                         ))}
                                     </ul>
@@ -223,7 +278,7 @@ function LandingPage() {
                                 </Typography>
                             </Box>
                         </Grid>
-                        <Grid item xs={12} md={6} mt={2}>
+                        <Grid item xs={12} md={6} mt={2} className="fade-in-left">
                             {/* Enlarged image with borderRadius */}
                             <img src="https://www.pathkindlabs.com/sites/default/files/styles/large/public/1-01.jpg" alt="Lab" style={{ width: '600px', height: '520px' }} />
                         </Grid>
@@ -239,18 +294,25 @@ function LandingPage() {
                         <Typography sx={{ textAlign: 'center' }} variant="h3" gutterBottom style={{ color: 'black' }}>
                             Developed by NanoBiosLab
                         </Typography>
-                        <hr/>
-                        <Typography variant="h5" sx={{ textAlign: 'justify' }} gutterBottom style={{ color: 'black' }}>
-                            About the lab
-                        </Typography>
-                        <Typography variant="body1" paragraph style={{ color: 'black', textAlign : "justify" }}>
-                            NanoBios Lab can be termed as the perfect breather for a passionate researcher. A learning hub where creative ideas are translated into successful simulations with a positive impact. Every candidate is trained resourcefully to lead research projects and contribute towards smooth operational activities of the lab. The lab group members associate with each other as family and believe in achieving success as a unit combining their expertise coming from various disciplines. Our guide (Prof. Srivastava) has always motivated us to explore solutions for the under-researched challenges majorly impacting our country. This is the place where we are empowered to be skilled independent researchers in the future, develop solutions for the healthcare industry and contribute to the maximum towards bringing up a healthier India.
-                        </Typography>
+                        <hr />
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <div style={{ flex: '1 1 50%', paddingRight: '20px' }} className="fade-in-left">
+                                <Typography variant="h5" sx={{ textAlign: 'justify' }} gutterBottom style={{ color: 'black' }}>
+                                    About the lab
+                                </Typography>
+                                <Typography variant="body1" paragraph style={{ color: 'black', textAlign: "justify" }}>
+                                    NanoBios Lab can be termed as the perfect breather for a passionate researcher. A learning hub where creative ideas are translated into successful simulations with a positive impact. Every candidate is trained resourcefully to lead research projects and contribute towards smooth operational activities of the lab. The lab group members associate with each other as family and believe in achieving success as a unit combining their expertise coming from various disciplines. Our guide (Prof. Srivastava) has always motivated us to explore solutions for the under-researched challenges majorly impacting our country. This is the place where we are empowered to be skilled independent researchers in the future, develop solutions for the healthcare industry and contribute to the maximum towards bringing up a healthier India.
+                                </Typography>
+                            </div>
+                            <div style={{ flex: '1 1 50%', paddingLeft: '20px' }} className="fade-in-left">
+                                <Lottie options={hello} height={400} width={400} />
+                            </div>
+                        </div>
                     </Box>
                 </Container>
             </Box>
 
-            <footer className="footer">
+            <footer className="footer fade-in-left">
                 <Typography variant="body2" >
                     &copy; {new Date().getFullYear()} | NanoBiosLab
                 </Typography>

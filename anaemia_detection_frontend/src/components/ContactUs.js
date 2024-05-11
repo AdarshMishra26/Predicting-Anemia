@@ -10,6 +10,17 @@ import Toolbar from '@mui/material/Toolbar';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import logo from '../assets/logo-modified.png';
+import Lottie from 'react-lottie';
+import animationData1 from '../assets/background.json';
+
+const hero1 = {
+  loop: true,
+  autoplay: true,
+  animationData: animationData1,
+  rendererSettings: {
+    preserveAspectRatio: 'xMidYMid slice'
+  }
+};
 
 function ContactUs() {
   const navigate = useNavigate();
@@ -55,7 +66,7 @@ function ContactUs() {
   };
 
   return (
-    <div style={{ backgroundColor: 'white', minHeight: '100vh' }}>
+    <div style={{  minHeight: '100vh' }}>
       <AppBar position="sticky" sx={{ top: 0, backgroundColor: "#eebcbc", padding: '5px', zIndex: 1000 }}>
         <Toolbar>
           <img src={logo} alt="logo" style={{ marginRight: '8px', height: '50px' }} />
@@ -90,8 +101,16 @@ function ContactUs() {
         </Toolbar>
       </AppBar>
 
+      <Lottie
+        options={hero1}
+        height={"100%"}
+        width={"100%"}
+        isClickToPauseDisabled={true}
+        style={{ position: "fixed", top: 0, left: 0, zIndex: -1 }}
+      />
+
       <Container maxWidth="md" sx={{ minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <Box sx={{ textAlign: 'center', color: 'black' }}>
+      <Box sx={{ textAlign: 'center', color: 'black', marginTop: '-100px' }}>
           <Typography variant="h4" gutterBottom>
             Contact Us
           </Typography>

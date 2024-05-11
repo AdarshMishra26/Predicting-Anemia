@@ -17,8 +17,6 @@ from rest_framework.authtoken.models import Token# Load your model
 model = load_model('anaemia_detection_model.h5')
 import jwt
 
-
-
 class ImagePredictionView(APIView):
     parser_classes = (MultiPartParser, FormParser)
 
