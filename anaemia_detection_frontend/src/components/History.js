@@ -24,7 +24,7 @@ const History = () => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('/api/prediction/history/', {
+        const response = await axios.get('http://localhost:8000/api/prediction/history/', {
           headers: {
             Authorization: `Token ${token}`
           }

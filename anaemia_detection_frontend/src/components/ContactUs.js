@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
@@ -13,10 +13,45 @@ import logo from '../assets/logo-modified.png';
 
 function ContactUs() {
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // handle form submission here
+    try {
+      setSubmitting(true);
+      const response = await fetch('http://localhost:8000/contact/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      if (response.ok) {
+        alert('Message sent successfully');
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        const data = await response.json();
+        alert(data.error || 'Failed to send message');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Failed to send message');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -65,7 +100,7 @@ function ContactUs() {
           </Typography>
           <Card sx={{ backgroundColor: 'white', boxShadow: '0px 4px 8px rgba(0,0,0,0.1)' }}>
             <CardContent>
-              <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+              <form onSubmit={handleSubmit}>
                 <TextField
                   margin="normal"
                   required
@@ -75,6 +110,8 @@ function ContactUs() {
                   name="name"
                   autoComplete="name"
                   autoFocus
+                  value={formData.name}
+                  onChange={handleChange}
                 />
                 <TextField
                   margin="normal"
@@ -84,6 +121,8 @@ function ContactUs() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  value={formData.email}
+                  onChange={handleChange}
                 />
                 <TextField
                   margin="normal"
@@ -95,21 +134,24 @@ function ContactUs() {
                   id="message"
                   multiline
                   rows={4}
+                  value={formData.message}
+                  onChange={handleChange}
                 />
                 <Button
                   type="submit"
                   fullWidth
                   variant="contained"
                   color="secondary"
+                  disabled={submitting}
                   sx={{
                     background: "#231651",
                     color: "white",
                     borderRadius: "1em"
                   }}
                 >
-                  Submit
+                  {submitting ? 'Submitting...' : 'Submit'}
                 </Button>
-              </Box>
+              </form>
             </CardContent>
           </Card>
         </Box>

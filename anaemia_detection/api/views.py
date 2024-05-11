@@ -11,11 +11,12 @@ from PIL import Image
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import get_user_model
-from .models import Prediction
+from .models import Prediction, ContactMessage
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token# Load your model
 model = load_model('anaemia_detection_model.h5')
 import jwt
+
 
 
 class ImagePredictionView(APIView):
@@ -179,6 +180,22 @@ class UserProfileView(APIView):
             profile.save()
 
             return Response({'message': 'User profile updated successfully'}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+class ContactUsView(APIView):
+    def post(self, request, *args, **kwargs):
+        try:
+            # Extracting data from request
+            name = request.data.get('name')
+            email = request.data.get('email')
+            message = request.data.get('message')
+
+            # Save the contact message to the database
+            ContactMessage.objects.create(name=name, email=email, message=message)
+
+            return Response({'message': 'Message sent successfully'}, status=status.HTTP_201_CREATED)
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
