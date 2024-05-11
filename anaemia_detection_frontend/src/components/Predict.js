@@ -12,6 +12,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Lottie from 'react-lottie';
 import animationData1 from '../assets/background.json';
 import img1 from '../assets/img_1_1.jpg';
+import zIndex from '@mui/material/styles/zIndex';
 
 const hero1 = {
     loop: true,
@@ -133,7 +134,7 @@ function Predict() {
                             onClose={handleClose}
                         >
                             <MenuItem onClick={() => navigate("/profile")}>Profile</MenuItem>
-                            <MenuItem onClick={() => navigate("/history")}>History</MenuItem>
+                            {/* <MenuItem onClick={() => navigate("/history")}>History</MenuItem> */}
                             <MenuItem onClick={() => navigate("/contact")}>Contact Us</MenuItem>
                             <MenuItem onClick={logout}>Logout</MenuItem>
                         </Menu>
@@ -254,7 +255,7 @@ function Predict() {
                         </Box>
                     </Container>
                 </Box>
-                <footer style={{ backgroundColor: '#eebcbc', color: '#231651', textAlign: 'center', padding: '10px', position: 'fixed', bottom: '0', width: '100%', fontWeight: '400', }}>
+                <footer style={{ backgroundColor: '#eebcbc', color: '#231651', textAlign: 'center', padding: '10px', position: 'fixed', bottom: '0', width: '100%', fontWeight: '400', zIndex:'1000',}}>
                     &copy; {new Date().getFullYear()} | NanoBiosLab
                 </footer>
             </ThemeProvider>

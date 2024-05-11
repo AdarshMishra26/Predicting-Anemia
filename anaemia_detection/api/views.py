@@ -31,14 +31,21 @@ class ImagePredictionView(APIView):
             # Open the image using Pillow
             img = Image.open(image)
 
+            # Convert the image to RGB if it is not
+            if img.mode != 'RGB':
+                img = img.convert('RGB')
+
             # Resize the image to match the model's input shape
             img = img.resize((128, 128))
 
             # Convert the image to a numpy array and normalize the pixel values
             img_array = np.array(img) / 255.0
 
+            # Ensure that the input has the correct shape (batch_size, height, width, channels)
+            img_array = np.expand_dims(img_array, axis=0)
+
             # Make a prediction using the model
-            prediction = model.predict(np.expand_dims(img_array, axis=0))
+            prediction = model.predict(img_array)
 
             # Prepare the response data
             response_data = {
