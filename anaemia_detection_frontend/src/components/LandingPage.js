@@ -62,6 +62,7 @@ function LandingPage() {
                         padding: ${isMobile ? '50px 0' : '100px 0'};
                         min-height: 100vh;
                         display: flex;
+                        opacity:90;
                         justify-content: center;
                         align-items: center;
                         background-color: #FAFAFA;
@@ -181,7 +182,7 @@ function LandingPage() {
                                 background: "#231651",
                                 color: "white",
                                 borderRadius: "1em",
-                                width: "70%",
+                                width: "20%",
                                 marginTop: "10px"
 
                             }}

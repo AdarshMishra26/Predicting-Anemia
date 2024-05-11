@@ -23,7 +23,12 @@ const History = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/api/prediction/history/');
+        const token = localStorage.getItem('token');
+        const response = await axios.get('/api/prediction/history/', {
+          headers: {
+            Authorization: `Token ${token}`
+          }
+        });
         setPredictions(response.data);
       } catch (error) {
         console.error('Error fetching prediction history:', error);

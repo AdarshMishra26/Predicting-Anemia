@@ -11,13 +11,12 @@ from PIL import Image
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import get_user_model
-
-# Load your model
+from .models import Prediction
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.models import Token# Load your model
 model = load_model('anaemia_detection_model.h5')
+import jwt
 
-# class Status(APIView):
-#     def get(self, request, *args, **kwargs):
-#          return Response({'message': 'Server is Running successfully'}, status=status.HTTP_200_OK)
 
 class ImagePredictionView(APIView):
     parser_classes = (MultiPartParser, FormParser)
@@ -25,7 +24,10 @@ class ImagePredictionView(APIView):
     def post(self, request, *args, **kwargs):
         try:
             # Get the uploaded image
-            image = request.FILES['image']
+            image = request.FILES.get('image')
+
+            if not image:
+                return JsonResponse({'error': 'No image file found'}, status=400)
 
             # Open the image using Pillow
             img = Image.open(image)
@@ -44,11 +46,41 @@ class ImagePredictionView(APIView):
                 'prediction': int(np.round(prediction[0][0]))
             }
 
+            # Save the prediction to the database
+            # user = request.user
+            # Prediction.objects.create(user=user, result=response_data['prediction'])
+
             return JsonResponse(response_data)
 
         except Exception as e:
+            # Log the error
+            print("Error:", e)
+            # print("Traceback:", traceback.format_exc())
+
             # If an error occurs, return a 500 Internal Server Error response
-            return JsonResponse({'error': str(e)}, status=500)
+            return JsonResponse({'error': 'Internal Server Error'}, status=500)
+
+class PredictionHistoryView(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            _User = get_user_model()
+            user = _User.objects.get(username=request.user)
+            predictions = Prediction.objects.filter(user=user).order_by('-timestamp')
+
+            response_data = []
+            for prediction in predictions:
+                response_data.append({
+                    'id': prediction.id,
+                    'timestamp': prediction.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+                    'result': prediction.result
+                })
+
+            return Response(response_data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 class SignInView(APIView):
     def post(self, request, *args, **kwargs):
@@ -57,16 +89,19 @@ class SignInView(APIView):
             email = request.data.get('email')
             password = request.data.get('password')
 
+            encoded = jwt.encode({"email":email}, "secret", algorithm="HS256")
+
             # Authenticating user
             user = authenticate(username=email, password=password)
 
             if user:
-                return Response({'message': 'User signed in successfully'}, status=status.HTTP_200_OK)
+                return Response({'message': 'User signed in successfully','token':encoded}, status=status.HTTP_200_OK)
             else:
                 return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class SignUpView(APIView):
     def post(self, request, *args, **kwargs):
@@ -102,24 +137,20 @@ class SignUpView(APIView):
 class UserProfileView(APIView):
     def get(self, request, *args, **kwargs):
         try:
+            print("Headers:", request.headers)  # Add this line to check the headers
+            token =  jwt.decode(request.headers['Authorization'].split(' ')[1], "secret", algorithms=["HS256"])
+            
             # Get the currently authenticated user
-            user = request.user
+            profile = User.objects.filter(email=token["email"]).values()
 
-            # Prepare the response data
-            response_data = {
-                'id': user.id,
-                'first_name': user.first_name,
-                'last_name': user.last_name,
-                'email': user.email,
-                # 'mobile_number': user.profile.mobile_number if user.profile else None,
-            }
-
-            return Response(response_data, status=status.HTTP_200_OK)
+            return Response({"response_data":profile}, status=status.HTTP_200_OK)
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-    def put(self, request, *args, **kwargs):
+
+
+    # def put(self, request, *args, **kwargs):
         try:
             # Get the currently authenticated user
             user = request.user
@@ -151,6 +182,3 @@ class UserProfileView(APIView):
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-
-

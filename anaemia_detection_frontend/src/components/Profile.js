@@ -16,24 +16,27 @@ const Profile = () => {
     firstName: '',
     lastName: '',
     email: '',
+    dateJoined: '',
   });
 
   const navigate = useNavigate();
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const result = await axios.get('http://localhost:8000/api/user/profile/', {
+        const result = await axios.get('http://127.0.0.1:8000/api/profile/', {
           headers: {
             Authorization: `Token ${token}`
           }
         });
+        const userData = result.data.response_data[0]; // Accessing the first element of the array
         setUserData({
-          id: result.data.id,
-          firstName: result.data.first_name,
-          lastName: result.data.last_name,
-          email: result.data.email,
+          id: userData.id,
+          firstName: userData.first_name,
+          lastName: userData.last_name,
+          email: userData.email,
+          dateJoined: userData.date_joined,
         });
       } catch (error) {
         console.error('Error fetching user profile:', error);
@@ -41,29 +44,12 @@ const Profile = () => {
     };
     fetchData();
   }, []);
-
-  const handleInput = (e) => {
-    setUserData({ ...userData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const token = localStorage.getItem('token');
-      await axios.put('http://localhost:8000/api/user/profile/', userData, {
-        headers: {
-          Authorization: `Token ${token}`
-        }
-      });
-      alert('User profile updated successfully');
-    } catch (error) {
-      console.error('Error updating user profile:', error);
-    }
-  };
+  
   const logout = () => {
     localStorage.removeItem("IS_LOGED");
     navigate("/");
   }
+
   return (
     <>
       <AppBar position="sticky" sx={{ top: 0, backgroundColor: "#eebcbc", padding: '5px', zIndex: 1000 }}>
@@ -85,7 +71,7 @@ const Profile = () => {
               Logout
             </Button>
             <Button
-              onClick={() => navigate("/contact")}
+              onClick={() => navigate("/predict")}
               variant="contained"
               sx={{
                 background: "#231651",
@@ -93,17 +79,17 @@ const Profile = () => {
                 borderRadius: "1em"
               }}
             >
-              Contact Us
+              Dashboard
             </Button>
           </Box>
         </Toolbar>
       </AppBar>
 
-      <Container maxWidth="sm" sx={{ p: 4, mt: 16 }}>
+      <Container maxWidth="sm" sx={{top:0, p: 4, mt: 6 }}>
         <Typography variant="h4" gutterBottom style={{ textAlign: 'center', mt: 4, mb: 4 }}>
           User Profile
         </Typography>
-        <form onSubmit={handleSubmit}>
+        <form>
           <TextField
             margin="normal"
             required
@@ -114,7 +100,9 @@ const Profile = () => {
             autoComplete="firstName"
             autoFocus
             value={userData.firstName}
-            onChange={handleInput}
+            InputProps={{
+              readOnly: true,
+            }}
           />
           <TextField
             margin="normal"
@@ -125,7 +113,9 @@ const Profile = () => {
             name="lastName"
             autoComplete="lastName"
             value={userData.lastName}
-            onChange={handleInput}
+            InputProps={{
+              readOnly: true,
+            }}
           />
           <TextField
             margin="normal"
@@ -136,22 +126,23 @@ const Profile = () => {
             name="email"
             autoComplete="email"
             value={userData.email}
-            onChange={handleInput}
+            InputProps={{
+              readOnly: true,
+            }}
           />
-          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{
-                background: "#231651",
-                color: "white",
-                borderRadius: "1em"
-              }}
-            >
-              Update
-            </Button>
-          </Box>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="dateJoined"
+            label="Date Joined"
+            name="dateJoined"
+            autoComplete="dateJoined"
+            value={userData.dateJoined}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
         </form>
       </Container>
       <footer style={{ backgroundColor: '#eebcbc', color: '#231651', textAlign: 'center', padding: '10px', position: 'fixed', bottom: '0', width: '100%', left: '0' }}>
