@@ -12,7 +12,6 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Lottie from 'react-lottie';
 import animationData1 from '../assets/background.json';
 import img1 from '../assets/img_1_1.jpg';
-import zIndex from '@mui/material/styles/zIndex';
 
 const hero1 = {
     loop: true,
@@ -79,15 +78,21 @@ function Predict() {
             formData.append('image', blob);
         }
 
-        axios.post('http://localhost:8000/api/predict/', formData)
-            .then(response => {
-                setPrediction(response.data.prediction);
-                setLoading(false);
-            })
-            .catch(error => {
-                setError(error.toString());
-                setLoading(false);
-            });
+        const token = localStorage.getItem('token'); // Assuming you are storing the JWT token in localStorage
+
+        axios.post('http://localhost:8000/api/predict/', formData, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            setPrediction(response.data.prediction);
+            setLoading(false);
+        })
+        .catch(error => {
+            setError(error.toString());
+            setLoading(false);
+        });
     };
 
     const handleClick = (event) => {
@@ -134,7 +139,7 @@ function Predict() {
                             onClose={handleClose}
                         >
                             <MenuItem onClick={() => navigate("/profile")}>Profile</MenuItem>
-                            {/* <MenuItem onClick={() => navigate("/history")}>History</MenuItem> */}
+                            <MenuItem onClick={() => navigate("/history")}>History</MenuItem>
                             <MenuItem onClick={() => navigate("/contact")}>Contact Us</MenuItem>
                             <MenuItem onClick={logout}>Logout</MenuItem>
                         </Menu>
@@ -255,7 +260,7 @@ function Predict() {
                         </Box>
                     </Container>
                 </Box>
-                <footer style={{ backgroundColor: '#eebcbc', color: '#231651', textAlign: 'center', padding: '10px', position: 'fixed', bottom: '0', width: '100%', fontWeight: '400', zIndex:'1000',}}>
+                <footer style={{ backgroundColor: '#eebcbc', color: '#231651', textAlign: 'center', padding: '10px', position: 'fixed', bottom: '0', width: '100%', fontWeight: '400', zIndex: '1000' }}>
                     &copy; {new Date().getFullYear()} | NanoBiosLab
                 </footer>
             </ThemeProvider>

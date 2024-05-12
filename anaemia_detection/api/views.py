@@ -16,6 +16,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token# Load your model
 model = load_model('anaemia_detection_model.h5')
 import jwt
+from rest_framework import serializers
+from datetime import datetime
 
 class ImagePredictionView(APIView):
     parser_classes = (MultiPartParser, FormParser)
@@ -47,21 +49,25 @@ class ImagePredictionView(APIView):
             # Make a prediction using the model
             prediction = model.predict(img_array)
 
+            # Extract user information from the JWT token
+            token = request.headers.get('Authorization').split(' ')[1]
+            decoded_token = jwt.decode(token, "secret", algorithms=["HS256"])
+            email = decoded_token["email"]
+            user = get_user_model().objects.get(email=email)
+
+            # Save the prediction to the database with the associated user
+            Prediction.objects.create(user=user, result=int(np.round(prediction[0][0])))
+
             # Prepare the response data
             response_data = {
                 'prediction': int(np.round(prediction[0][0]))
             }
-
-            # Save the prediction to the database
-            # user = request.user
-            # Prediction.objects.create(user=user, result=response_data['prediction'])
 
             return JsonResponse(response_data)
 
         except Exception as e:
             # Log the error
             print("Error:", e)
-            # print("Traceback:", traceback.format_exc())
 
             # If an error occurs, return a 500 Internal Server Error response
             return JsonResponse({'error': 'Internal Server Error'}, status=500)
@@ -69,19 +75,31 @@ class ImagePredictionView(APIView):
 class PredictionHistoryView(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            _User = get_user_model()
-            user = _User.objects.get(username=request.user)
-            predictions = Prediction.objects.filter(user=user).order_by('-timestamp')
+            # Extract email from JWT token
+            token = request.headers.get('Authorization').split(' ')[1]
+            decoded_token = jwt.decode(token, "secret", algorithms=["HS256"])
+            email = decoded_token["email"]
+            
+            # Get user based on email
+            user = get_user_model().objects.get(email=email)
+            
+            # Fetch predictions associated with the user
+            predictions = Prediction.objects.filter(user=user)
+            
+            # Serialize the predictions
+            class PredictionSerializer(serializers.ModelSerializer):
+                timestamp = serializers.SerializerMethodField()
 
-            response_data = []
-            for prediction in predictions:
-                response_data.append({
-                    'id': prediction.id,
-                    'timestamp': prediction.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
-                    'result': prediction.result
-                })
+                def get_timestamp(self, obj):
+                    return obj.timestamp.strftime("%Y-%m-%d %H:%M:%S")
 
-            return Response(response_data, status=status.HTTP_200_OK)
+                class Meta:
+                    model = Prediction
+                    fields = ['id', 'timestamp', 'result']
+            
+            serializer = PredictionSerializer(predictions, many=True)
+            
+            return Response(serializer.data)
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

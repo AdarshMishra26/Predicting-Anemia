@@ -15,6 +15,17 @@ import Toolbar from '@mui/material/Toolbar';
 import logo from '../assets/logo-modified.png';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
+import Lottie from 'react-lottie';
+import animationData1 from '../assets/background.json';
+
+const hero1 = {
+  loop: true,
+  autoplay: true,
+  animationData: animationData1,
+  rendererSettings: {
+    preserveAspectRatio: 'xMidYMid slice'
+  }
+};
 
 const History = () => {
   const navigate = useNavigate();
@@ -24,9 +35,9 @@ const History = () => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:8000/api/prediction/history/', {
+        const response = await axios.get('http://localhost:8000/prediction/history/', {
           headers: {
-            Authorization: `Token ${token}`
+            Authorization: `Bearer ${token}` // Use 'Bearer' keyword before the token
           }
         });
         setPredictions(response.data);
@@ -43,8 +54,8 @@ const History = () => {
       <AppBar position="sticky" sx={{ top: 0, backgroundColor: "#eebcbc", padding: '5px', zIndex: 1000 }}>
         <Toolbar>
           <img src={logo} alt="logo" style={{ marginRight: '8px', height: '50px' }} />
-          <Typography variant="h6" component="div" sx={{ color: "#231651", fontWeight : "800",lineHeight : "20px", flexGrow: 1 }}>
-            Anaemia <br/> Predictor
+          <Typography variant="h6" component="div" sx={{ color: "#231651", fontWeight: "800", lineHeight: "20px", flexGrow: 1 }}>
+            Anaemia <br /> Predictor
           </Typography>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', flexGrow: 1, gap: '16px' }}>
             <Button
@@ -72,10 +83,21 @@ const History = () => {
           </Box>
         </Toolbar>
       </AppBar>
+
+      <Lottie
+        options={hero1}
+        height={"100%"}
+        width={"100%"}
+        isClickToPauseDisabled={true}
+        style={{ position: "fixed", top: 0, left: 0, zIndex: -1 }}
+      />
+
       <Container maxWidth="md" sx={{ p: 4, mt: 16 }}>
+        <Box sx={{  mt: '0',marginTop: '-100px'  }}>
         <Typography variant="h4" gutterBottom style={{ textAlign: 'center', mt: 4, mb: 4 }}>
           Prediction History
         </Typography>
+
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
@@ -95,14 +117,16 @@ const History = () => {
                     {prediction.id}
                   </TableCell>
                   <TableCell align="right">{prediction.timestamp}</TableCell>
-                  <TableCell align="right">{prediction.result}</TableCell>
+                  <TableCell align="right">{prediction.result === 1 ? 'Anemia' : 'Normal'}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
+        </Box>
       </Container>
-      <footer style={{ backgroundColor: '#eebcbc', color: '#231651', textAlign: 'center', padding: '10px', position: 'fixed', bottom: '0', width: '100%', fontWeight: '800', left:'0' }}>
+
+      <footer style={{ backgroundColor: '#eebcbc', color: '#231651', textAlign: 'center', padding: '10px', position: 'fixed', bottom: '0', width: '100%', fontWeight: '800', left: '0' }}>
         &copy; {new Date().getFullYear()} | NanoBiosLab
       </footer>
     </>
